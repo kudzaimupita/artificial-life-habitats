@@ -94,8 +94,18 @@ export function serve(port, host = '127.0.0.1') {
 
 if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
   const port = Number(process.env.PORT ?? 8080);
-  const server = await serve(port);
-  const address = server.address();
-  const bound = typeof address === 'object' && address ? address.port : port;
-  console.log(`Serving the habitats at http://localhost:${bound}/  (Ctrl+C to stop)`);
+  try {
+    const server = await serve(port);
+    const address = server.address();
+    const bound = typeof address === 'object' && address ? address.port : port;
+    console.log(`Serving the habitats at http://localhost:${bound}/  (Ctrl+C to stop)`);
+  } catch (error) {
+    const code = /** @type {NodeJS.ErrnoException} */ (error).code;
+    console.error(
+      code === 'EADDRINUSE'
+        ? `Port ${port} is in use. Pick another with PORT=<number> npm run serve.`
+        : error,
+    );
+    process.exitCode = 1;
+  }
 }
