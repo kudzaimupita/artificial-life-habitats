@@ -22,7 +22,7 @@ const SURPRISE_RATE = 0.45;
 export const BIG_SURPRISE = 5;
 /** Big surprises in a row that make the mind reconsider which season it is in. */
 const SURPRISES_TO_RECONSIDER = 2;
-/** Meals after a switch during which surprises are learned from, not held. */
+/** Meals in a fresh memory during which surprises are learned from, not held. */
 const SETTLE_MEALS = 3;
 /** An old memory explains the evidence if its mean error is below this. */
 const RECALL_ERROR = 2.5;
@@ -233,7 +233,10 @@ export class Mind {
       return { predicted, surprise, events };
     }
 
-    const settled = this.mealCount - this.lastSwitch >= SETTLE_MEALS;
+    // A memory with almost no meals in it has nothing to be surprised
+    // against: a newborn's first meals are lessons, not signs of change.
+    const settled =
+      this.mealCount - this.lastSwitch >= SETTLE_MEALS && this.context.meals.length >= SETTLE_MEALS;
     if (surprise > BIG_SURPRISE && settled) {
       this.pending.push({ colour, shape, value });
       if (this.pending.length >= SURPRISES_TO_RECONSIDER) {
