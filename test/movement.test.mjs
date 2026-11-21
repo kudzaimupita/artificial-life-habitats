@@ -4,13 +4,13 @@ import { FLOOR, ICE, WALL, cellOf, inside } from '../src/core/constants.js';
 import { InnateMovement, LearnedMovement, resolveMove } from '../src/core/movement.js';
 
 /**
- * A terrain made of floor except where listed.
- * @param {Record<string, number>} [special] Terrain by "x,y".
+ * A ground made of floor except where listed.
+ * @param {Record<string, number>} [special] Ground by "x,y".
  */
-function terrain(special = {}) {
+function groundWith(special = {}) {
   return {
     /** @param {number} x @param {number} y */
-    terrainAt: (x, y) => (inside(x, y) ? (special[`${x},${y}`] ?? FLOOR) : WALL),
+    groundAt: (x, y) => (inside(x, y) ? (special[`${x},${y}`] ?? FLOOR) : WALL),
   };
 }
 
@@ -20,26 +20,26 @@ const WEST = 2;
 const NORTH = 3;
 
 test('a move over floor goes one cell', () => {
-  assert.equal(resolveMove(terrain(), 5, 5, EAST), cellOf(6, 5));
-  assert.equal(resolveMove(terrain(), 5, 5, SOUTH), cellOf(5, 6));
-  assert.equal(resolveMove(terrain(), 5, 5, WEST), cellOf(4, 5));
-  assert.equal(resolveMove(terrain(), 5, 5, NORTH), cellOf(5, 4));
+  assert.equal(resolveMove(groundWith(), 5, 5, EAST), cellOf(6, 5));
+  assert.equal(resolveMove(groundWith(), 5, 5, SOUTH), cellOf(5, 6));
+  assert.equal(resolveMove(groundWith(), 5, 5, WEST), cellOf(4, 5));
+  assert.equal(resolveMove(groundWith(), 5, 5, NORTH), cellOf(5, 4));
 });
 
 test('walls and the edge of the world block', () => {
-  assert.equal(resolveMove(terrain({ '6,5': WALL }), 5, 5, EAST), cellOf(5, 5));
-  assert.equal(resolveMove(terrain(), 0, 0, WEST), cellOf(0, 0));
-  assert.equal(resolveMove(terrain(), 0, 0, NORTH), cellOf(0, 0));
+  assert.equal(resolveMove(groundWith({ '6,5': WALL }), 5, 5, EAST), cellOf(5, 5));
+  assert.equal(resolveMove(groundWith(), 0, 0, WEST), cellOf(0, 0));
+  assert.equal(resolveMove(groundWith(), 0, 0, NORTH), cellOf(0, 0));
 });
 
 test('ice slides one extra cell unless something blocks the slide', () => {
-  assert.equal(resolveMove(terrain({ '6,5': ICE }), 5, 5, EAST), cellOf(7, 5));
-  assert.equal(resolveMove(terrain({ '6,5': ICE, '7,5': WALL }), 5, 5, EAST), cellOf(6, 5));
+  assert.equal(resolveMove(groundWith({ '6,5': ICE }), 5, 5, EAST), cellOf(7, 5));
+  assert.equal(resolveMove(groundWith({ '6,5': ICE, '7,5': WALL }), 5, 5, EAST), cellOf(6, 5));
 });
 
 test('the innate model predicts with the wiring it was born with', () => {
   const model = new InnateMovement([SOUTH, EAST, NORTH, WEST]);
-  assert.equal(model.landing(terrain(), 5, 5, 0), cellOf(5, 6));
+  assert.equal(model.landing(groundWith(), 5, 5, 0), cellOf(5, 6));
   assert.equal(model.untriedButton(), -1);
   assert.equal(model.direction(2), NORTH);
 });
@@ -51,7 +51,7 @@ test('the innate model predicts with the wiring it was born with', () => {
  * @param {number} rounds
  */
 function practise(model, wiring, rounds) {
-  const ground = terrain();
+  const ground = groundWith();
   for (let round = 0; round < rounds; round++) {
     wiring.forEach((direction, button) => {
       const cell = resolveMove(ground, 10, 10, direction);
@@ -63,7 +63,7 @@ function practise(model, wiring, rounds) {
 test('the learned model starts knowing nothing', () => {
   const model = new LearnedMovement();
   assert.equal(model.untriedButton(), 0);
-  assert.equal(model.landing(terrain(), 5, 5, 0), -1);
+  assert.equal(model.landing(groundWith(), 5, 5, 0), -1);
 });
 
 test('one press per button is enough to learn the wiring on open floor', () => {
@@ -89,7 +89,7 @@ test('the learned model relearns after a rewiring', () => {
 });
 
 test('the learned model discovers that walls block and ice slides', () => {
-  const ground = terrain({ '6,5': WALL, '5,6': ICE });
+  const ground = groundWith({ '6,5': WALL, '5,6': ICE });
   const model = new LearnedMovement();
   practise(model, [EAST, SOUTH, WEST, NORTH], 1);
   // Before meeting them, unknown ground is assumed walkable.

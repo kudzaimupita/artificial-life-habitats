@@ -75,7 +75,7 @@ export const HABITATS = [
       {
         id: 'innate',
         label: 'Born knowing',
-        blurb: 'Knows its buttons and the terrain from birth, and never revises that.',
+        blurb: 'Knows its buttons and the ground from birth, and never revises that.',
         abilities: { memory: true, planner: true },
       },
       {

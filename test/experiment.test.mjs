@@ -68,14 +68,14 @@ for (const habitat of HABITATS) {
         const { creature } = world;
         assert.ok(creature.energy > 0 && creature.energy <= MAX_ENERGY);
         assert.ok(creature.x >= 0 && creature.x < SIZE && creature.y >= 0 && creature.y < SIZE);
-        assert.notEqual(world.terrainAt(creature.x, creature.y), WALL);
+        assert.notEqual(world.groundAt(creature.x, creature.y), WALL);
         assert.ok(world.food.size <= FOOD_COUNT);
       }
     }
     assert.equal(experiment.t, STEPS);
     for (const world of experiment.worlds) {
       for (const food of world.food.values()) {
-        assert.notEqual(world.terrainAt(food.x, food.y), WALL);
+        assert.notEqual(world.groundAt(food.x, food.y), WALL);
       }
       assert.ok(world.stats.goodMeals > 0, 'the creature found something to eat');
     }

@@ -1,4 +1,4 @@
-// The world: a grid with terrain and food, one creature living in it, and the
+// The world: a grid with ground and food, one creature living in it, and the
 // rules that decide what happens when the creature presses a button or eats.
 
 import {
@@ -116,18 +116,18 @@ export class World {
     /** @type {WorldEvent[]} */
     this.events = [];
 
-    // Terrain, wiring and the first food all come from the start of the
+    // Ground, wiring and the first food all come from the start of the
     // random stream and do not depend on the creature, so every variant run
     // on the same seed starts in the same world.
-    this.terrain = new Uint8Array(SIZE * SIZE);
-    for (let cell = 0; cell < this.terrain.length; cell++) {
+    this.ground = new Uint8Array(SIZE * SIZE);
+    for (let cell = 0; cell < this.ground.length; cell++) {
       const roll = this.rng();
-      if (roll < this.options.walls) this.terrain[cell] = WALL;
-      else if (roll < this.options.walls + this.options.ice) this.terrain[cell] = ICE;
+      if (roll < this.options.walls) this.ground[cell] = WALL;
+      else if (roll < this.options.walls + this.options.ice) this.ground[cell] = ICE;
     }
     const centre = SIZE / 2;
     for (let y = centre - 1; y <= centre + 1; y++) {
-      for (let x = centre - 1; x <= centre + 1; x++) this.terrain[cellOf(x, y)] = FLOOR;
+      for (let x = centre - 1; x <= centre + 1; x++) this.ground[cellOf(x, y)] = FLOOR;
     }
 
     /** Direction index each button is wired to right now. */
@@ -159,10 +159,10 @@ export class World {
   /**
    * @param {number} x
    * @param {number} y
-   * @returns {number} Terrain code; everything outside the grid is wall.
+   * @returns {number} Ground code; everything outside the grid is wall.
    */
-  terrainAt(x, y) {
-    return inside(x, y) ? this.terrain[cellOf(x, y)] : WALL;
+  groundAt(x, y) {
+    return inside(x, y) ? this.ground[cellOf(x, y)] : WALL;
   }
 
   /**
@@ -213,7 +213,7 @@ export class World {
       x = randomInt(this.rng, SIZE);
       y = randomInt(this.rng, SIZE);
     } while (
-      this.terrainAt(x, y) === WALL ||
+      this.groundAt(x, y) === WALL ||
       this.food.has(cellOf(x, y)) ||
       (x === creature.x && y === creature.y)
     );
@@ -223,7 +223,7 @@ export class World {
   }
 
   /**
-   * Apply a button press to the creature with the real wiring and terrain.
+   * Apply a button press to the creature with the real wiring and ground.
    * @param {number} button
    * @returns {number} The cell the creature ends up on.
    */
@@ -342,7 +342,7 @@ export class World {
       do {
         creature.x = randomInt(this.rng, SIZE);
         creature.y = randomInt(this.rng, SIZE);
-      } while (this.terrainAt(creature.x, creature.y) === WALL);
+      } while (this.groundAt(creature.x, creature.y) === WALL);
     }
 
     this.t = t + 1;

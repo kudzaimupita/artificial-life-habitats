@@ -8,41 +8,41 @@
 import { DIRECTIONS, FLOOR, ICE, SIZE, WALL, cellOf, inside } from './constants.js';
 
 /**
- * The part of the world a movement model may look at: the terrain.
- * @typedef {object} Terrain
- * @property {(x: number, y: number) => number} terrainAt
+ * The part of the world a movement model may look at: the ground.
+ * @typedef {object} Ground
+ * @property {(x: number, y: number) => number} groundAt
  */
 
 /**
  * @typedef {object} MovementModel
- * @property {(terrain: Terrain, x: number, y: number, button: number) => number} landing
+ * @property {(ground: Ground, x: number, y: number, button: number) => number} landing
  *   The cell a press is expected to land on, or -1 if the model has no idea.
- * @property {(terrain: Terrain, x: number, y: number, button: number, toX: number, toY: number) => void} learn
+ * @property {(ground: Ground, x: number, y: number, button: number, toX: number, toY: number) => void} learn
  * @property {() => number} untriedButton A button never pressed, or -1.
  * @property {(button: number) => number} direction Believed direction index, or -1.
  */
 
 /**
  * The true rule: where a move in a given direction ends up.
- * @param {Terrain} terrain
+ * @param {Ground} ground
  * @param {number} x
  * @param {number} y
  * @param {number} direction Index into DIRECTIONS.
  * @returns {number} Cell index.
  */
-export function resolveMove(terrain, x, y, direction) {
+export function resolveMove(ground, x, y, direction) {
   const [dx, dy] = DIRECTIONS[direction];
   const nx = x + dx;
   const ny = y + dy;
-  if (terrain.terrainAt(nx, ny) === WALL) return cellOf(x, y);
-  if (terrain.terrainAt(nx, ny) === ICE && terrain.terrainAt(nx + dx, ny + dy) !== WALL) {
+  if (ground.groundAt(nx, ny) === WALL) return cellOf(x, y);
+  if (ground.groundAt(nx, ny) === ICE && ground.groundAt(nx + dx, ny + dy) !== WALL) {
     return cellOf(nx + dx, ny + dy);
   }
   return cellOf(nx, ny);
 }
 
 /**
- * Built-in knowledge: the wiring at birth and the true terrain rules.
+ * Built-in knowledge: the wiring at birth and the true ground rules.
  * @implements {MovementModel}
  */
 export class InnateMovement {
@@ -52,13 +52,13 @@ export class InnateMovement {
   }
 
   /**
-   * @param {Terrain} terrain
+   * @param {Ground} ground
    * @param {number} x
    * @param {number} y
    * @param {number} button
    */
-  landing(terrain, x, y, button) {
-    return resolveMove(terrain, x, y, this.wiring[button]);
+  landing(ground, x, y, button) {
+    return resolveMove(ground, x, y, this.wiring[button]);
   }
 
   learn() {}
@@ -74,8 +74,8 @@ export class InnateMovement {
 }
 
 const BUTTON_FADE = 0.85;
-const TERRAIN_FADE = 0.95;
-/** Terrain outcomes the learned model counts. */
+const GROUND_FADE = 0.95;
+/** Ground outcomes the learned model counts. */
 const BLOCKED = 0;
 const ONE_STEP = 1;
 const SLIDE = 2;
@@ -90,8 +90,8 @@ export class LearnedMovement {
   constructor() {
     /** @type {number[][]} Per button, evidence for each direction. */
     this.buttons = DIRECTIONS.map(() => DIRECTIONS.map(() => 0));
-    /** @type {number[][]} Per terrain kind, evidence for blocked / one step / slide. */
-    this.ground = [FLOOR, ICE, WALL].map(() => [0, 0, 0]);
+    /** @type {number[][]} Per ground kind, evidence for blocked / one step / slide. */
+    this.outcomes = [FLOOR, ICE, WALL].map(() => [0, 0, 0]);
   }
 
   /** @param {number} button */
@@ -106,22 +106,22 @@ export class LearnedMovement {
   }
 
   /**
-   * @param {number} kind Terrain code.
+   * @param {number} kind Ground code.
    * @returns {number} Most likely outcome of stepping onto that ground, or -1.
    */
   outcome(kind) {
-    const counts = this.ground[kind];
+    const counts = this.outcomes[kind];
     const total = counts.reduce((a, b) => a + b, 0);
     return total < 0.5 ? -1 : counts.indexOf(Math.max(...counts));
   }
 
   /**
-   * @param {Terrain} terrain
+   * @param {Ground} ground
    * @param {number} x
    * @param {number} y
    * @param {number} button
    */
-  landing(terrain, x, y, button) {
+  landing(ground, x, y, button) {
     const direction = this.direction(button);
     if (direction < 0) return -1;
     const [dx, dy] = DIRECTIONS[direction];
@@ -129,12 +129,12 @@ export class LearnedMovement {
     const ny = y + dy;
     // The edge of the world is plain to see and always blocks.
     if (!inside(nx, ny)) return cellOf(x, y);
-    const outcome = this.outcome(terrain.terrainAt(nx, ny));
+    const outcome = this.outcome(ground.groundAt(nx, ny));
     if (outcome === BLOCKED) return cellOf(x, y);
     if (outcome === SLIDE) {
       const fx = nx + dx;
       const fy = ny + dy;
-      if (inside(fx, fy) && this.outcome(terrain.terrainAt(fx, fy)) !== BLOCKED) {
+      if (inside(fx, fy) && this.outcome(ground.groundAt(fx, fy)) !== BLOCKED) {
         return cellOf(fx, fy);
       }
     }
@@ -143,14 +143,14 @@ export class LearnedMovement {
   }
 
   /**
-   * @param {Terrain} terrain
+   * @param {Ground} ground
    * @param {number} x
    * @param {number} y
    * @param {number} button
    * @param {number} toX
    * @param {number} toY
    */
-  learn(terrain, x, y, button, toX, toY) {
+  learn(ground, x, y, button, toX, toY) {
     const dx = toX - x;
     const dy = toY - y;
     if (dx === 0 && dy === 0) {
@@ -158,7 +158,7 @@ export class LearnedMovement {
       const believed = this.direction(button);
       if (believed >= 0) {
         const [bx, by] = DIRECTIONS[believed];
-        this.countGround(terrain.terrainAt(x + bx, y + by), BLOCKED);
+        this.countGround(ground.groundAt(x + bx, y + by), BLOCKED);
       }
       return;
     }
@@ -168,7 +168,7 @@ export class LearnedMovement {
     counts[moved] += 1;
     const distance = Math.abs(dx) + Math.abs(dy);
     const [mx, my] = DIRECTIONS[moved];
-    this.countGround(terrain.terrainAt(x + mx, y + my), distance === 2 ? SLIDE : ONE_STEP);
+    this.countGround(ground.groundAt(x + mx, y + my), distance === 2 ? SLIDE : ONE_STEP);
   }
 
   /**
@@ -176,8 +176,8 @@ export class LearnedMovement {
    * @param {number} outcome
    */
   countGround(kind, outcome) {
-    const counts = this.ground[kind];
-    for (let i = 0; i < counts.length; i++) counts[i] *= TERRAIN_FADE;
+    const counts = this.outcomes[kind];
+    for (let i = 0; i < counts.length; i++) counts[i] *= GROUND_FADE;
     counts[outcome] += 1;
   }
 }

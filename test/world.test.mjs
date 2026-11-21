@@ -46,13 +46,13 @@ test('a new world has a full larder and a creature in the middle', () => {
 test('food never grows on a wall and the start area is clear', () => {
   const world = new World(11, { walls: 0.3, ice: 0.2 });
   for (const food of world.food.values()) {
-    assert.notEqual(world.terrainAt(food.x, food.y), WALL);
+    assert.notEqual(world.groundAt(food.x, food.y), WALL);
   }
   for (let y = 11; y <= 13; y++) {
-    for (let x = 11; x <= 13; x++) assert.equal(world.terrainAt(x, y), 0);
+    for (let x = 11; x <= 13; x++) assert.equal(world.groundAt(x, y), 0);
   }
-  assert.equal(world.terrainAt(-1, 0), WALL);
-  assert.equal(world.terrainAt(0, SIZE), WALL);
+  assert.equal(world.groundAt(-1, 0), WALL);
+  assert.equal(world.groundAt(0, SIZE), WALL);
 });
 
 test('every variant of a seed starts in the same world', () => {
@@ -62,7 +62,7 @@ test('every variant of a seed starts in the same world', () => {
     { walls: 0.1, ice: 0.12, scrambled: true },
     { memory: true, planner: true },
   );
-  assert.deepEqual(a.terrain, b.terrain);
+  assert.deepEqual(a.ground, b.ground);
   assert.deepEqual(a.wiring, b.wiring);
   assert.deepEqual([...a.food.entries()], [...b.food.entries()]);
 });
@@ -116,7 +116,7 @@ test('a creature that runs out of energy dies, is counted, and comes back', () =
   world.step();
   assert.equal(world.stats.deaths, 1);
   assert.equal(creature.energy, RESPAWN_ENERGY);
-  assert.notEqual(world.terrainAt(creature.x, creature.y), WALL);
+  assert.notEqual(world.groundAt(creature.x, creature.y), WALL);
   assert.equal(creature.mind, mind, 'memories survive death');
   assert.equal(world.events.at(-1)?.kind, 'death');
 });

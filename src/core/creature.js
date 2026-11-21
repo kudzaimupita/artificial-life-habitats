@@ -37,7 +37,7 @@ const HUNGER_CURIOSITY = 10;
  * @typedef {object} Abilities
  * @property {boolean} [memory] Surprise-held memories, recall and sleep.
  * @property {boolean} [planner] Plans routes instead of stepping straight at food.
- * @property {boolean} [learnsMovement] Learns its buttons and the terrain from scratch.
+ * @property {boolean} [learnsMovement] Learns its buttons and the ground from scratch.
  * @property {boolean} [forecast] Learns the seasons of famine, hibernates and stocks up.
  * @property {boolean} [dangerMemory] Remembers a near-fatal food after one meal.
  */

@@ -40,10 +40,10 @@ export function drawWorld(canvas, world, theme, tone, pixelRatio) {
   const { creature } = world;
   const centre = (/** @type {number} */ v) => (v + 0.5) * cell;
 
-  // Terrain.
+  // Ground.
   for (let y = 0; y < SIZE; y++) {
     for (let x = 0; x < SIZE; x++) {
-      const kind = world.terrainAt(x, y);
+      const kind = world.groundAt(x, y);
       if (kind === WALL) {
         g.fillStyle = theme.wall;
         g.fillRect(x * cell + 0.5, y * cell + 0.5, cell - 1, cell - 1);

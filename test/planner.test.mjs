@@ -58,12 +58,12 @@ test('food believed to be bad is never a target', () => {
 test('a route bends around walls', () => {
   const world = setUp();
   const food = put(world, 14, 12, 0, 0);
-  for (let y = 10; y <= 14; y++) world.terrain[cellOf(13, y)] = WALL;
+  for (let y = 10; y <= 14; y++) world.ground[cellOf(13, y)] = WALL;
   const plan = planRoute(world, world.creature, DISTANCE_COST);
   assert.ok(plan);
   assert.equal(plan.target, food);
   assert.ok(plan.buttons.length > 2);
-  for (const cell of plan.cells) assert.notEqual(world.terrain[cell], WALL);
+  for (const cell of plan.cells) assert.notEqual(world.ground[cell], WALL);
 });
 
 test('a route bends around food believed to be bad', () => {

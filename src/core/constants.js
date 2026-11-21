@@ -33,7 +33,7 @@ export const DISTANCE_COST = 0.35;
 /** A food must be at least this appealing, after distance, to be worth a trip. */
 export const TARGET_THRESHOLD = 0.5;
 
-/** Terrain codes. */
+/** Ground codes. */
 export const FLOOR = 0;
 export const ICE = 1;
 export const WALL = 2;
