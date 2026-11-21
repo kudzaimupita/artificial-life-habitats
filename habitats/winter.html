@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="dark" />
+    <title>Planning for winter · Artificial life habitats</title>
+    <link rel="stylesheet" href="../src/ui/styles.css" />
+  </head>
+  <body>
+    <main>
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="../index.html">Habitats</a><span>/</span><span class="here">04 winter</span>
+      </nav>
+      <h1>Planning for winter</h1>
+      <p class="lede">
+        Every year of 2,400 steps ends in a winter of 800 steps in which nothing grows, and what
+        food is left rots away. Neither creature can see a calendar. Both can feel the temperature,
+        which falls towards midwinter and rises again. The <b>unprepared</b> planner ignores it and
+        spends the winter searching an empty world at full cost. The <b>winter planner</b> learns
+        two things from experience: how much food it usually sees at each temperature, and which
+        temperature tends to follow 200 steps later. Together they make a forecast. When famine is
+        forecast it walks further for a meal, and when famine has arrived and nothing in sight is
+        worth eating it hibernates, which costs under a third of the energy of staying awake.
+        Winters are the shaded bands on the chart. The first one catches both creatures equally; the
+        experiment is about the ones after.
+      </p>
+      <div data-app>
+        <noscript>This demo is a simulation drawn with JavaScript, which is switched off.</noscript>
+      </div>
+      <nav class="pager" aria-label="Other habitats">
+        <a href="movement.html">← Learning to move</a>
+        <a href="danger.html">One-trial danger memory →</a>
+      </nav>
+    </main>
+    <script type="module">
+      import { mount } from '../src/ui/app.js';
+      mount('winter');
+    </script>
+  </body>
+</html>

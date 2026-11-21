@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="dark" />
+    <title>Artificial life habitats</title>
+    <link rel="stylesheet" href="src/ui/styles.css" />
+  </head>
+  <body>
+    <main>
+      <nav class="crumbs" aria-label="Breadcrumb"><span class="here">Habitats</span></nav>
+      <h1>Artificial life habitats</h1>
+      <p class="lede">
+        Small worlds in which a creature has to eat to stay alive while the rules keep changing.
+        Each page puts two creatures in identical copies of one world. They differ in a single
+        ability, so whatever separates them on the chart is down to that ability. Everything runs in
+        the page from a seed you can set, and the same code runs headless to measure the difference
+        over many worlds.
+      </p>
+
+      <ol class="entries">
+        <li class="entry">
+          <a href="habitats/seasons.html">
+            <span class="index">01</span>
+            <h2>Seasons and memory</h2>
+            <span class="versus">Simple / <b>Memory</b></span>
+            <p>Does remembering past seasons beat relearning them every time?</p>
+          </a>
+        </li>
+        <li class="entry">
+          <a href="habitats/planning.html">
+            <span class="index">02</span>
+            <h2>Planning a route</h2>
+            <span class="versus">Greedy / <b>Planner</b></span>
+            <p>Does imagining a route beat walking straight at food?</p>
+          </a>
+        </li>
+        <li class="entry">
+          <a href="habitats/movement.html">
+            <span class="index">03</span>
+            <h2>Learning to move</h2>
+            <span class="versus">Born knowing / <b>Learns movement</b></span>
+            <p>What happens to a planner when its own body stops working as it expects?</p>
+          </a>
+        </li>
+        <li class="entry">
+          <a href="habitats/winter.html">
+            <span class="index">04</span>
+            <h2>Planning for winter</h2>
+            <span class="versus">Unprepared / <b>Winter planner</b></span>
+            <p>Can a creature learn that cold means famine, and sit it out?</p>
+          </a>
+        </li>
+        <li class="entry">
+          <a href="habitats/danger.html">
+            <span class="index">05</span>
+            <h2>One-trial danger memory</h2>
+            <span class="versus">Gradual learner / <b>Danger memory</b></span>
+            <p>What should a creature do with a meal that nearly kills it?</p>
+          </a>
+        </li>
+      </ol>
+
+      <section class="section">
+        <h2>The rules every habitat shares</h2>
+        <p>
+          The world is a 24 by 24 grid holding 22 pieces of food. A food has one of three colours
+          and one of two shapes, and is worth its colour's value plus its shape's value. Both values
+          change with the season, so the same food can feed a creature in one season and poison it
+          in the next. Food rots and regrows elsewhere.
+        </p>
+        <p>
+          A creature sees seven cells in each direction, spends a little energy on every step, and
+          dies when it runs out. It then comes back somewhere else with its memories intact, so a
+          run counts how often a mind fails rather than how long one body lasts.
+        </p>
+      </section>
+
+      <section class="section">
+        <h2>Measuring it</h2>
+        <p>
+          One world proves little. The harness runs a habitat on several seeds without drawing
+          anything and prints the comparison as a table. The same seed gives the same result in the
+          page and on the command line.
+        </p>
+        <pre>node harness/run.mjs --habitat seasons --seeds 8</pre>
+      </section>
+    </main>
+  </body>
+</html>

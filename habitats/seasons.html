@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="dark" />
+    <title>Seasons and memory · Artificial life habitats</title>
+    <link rel="stylesheet" href="../src/ui/styles.css" />
+  </head>
+  <body>
+    <main>
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="../index.html">Habitats</a><span>/</span><span class="here">01 seasons</span>
+      </nav>
+      <h1>Seasons and memory</h1>
+      <p class="lede">
+        Two creatures live alone in identical worlds and must eat to stay alive. Every food has a
+        colour and a shape, and what each is worth changes with the season, every 1,200 steps: food
+        that fed a creature last season may cost it energy now. The <b>simple</b> creature keeps one
+        set of beliefs and nudges them after every meal, so each change of season finds it eating
+        poison until its beliefs come round. The <b>memory</b> creature treats a run of surprising
+        meals as a sign that the world has changed. It sets those meals aside instead of overwriting
+        what it knew, looks for an older memory that explains them, and switches to it or starts a
+        new one. Now and then it sleeps, replaying recent meals and merging memories that turned out
+        to be duplicates. The ticks under the chart are season changes. The experiment asks whether
+        remembering old seasons beats relearning them every time.
+      </p>
+      <div data-app>
+        <noscript>This demo is a simulation drawn with JavaScript, which is switched off.</noscript>
+      </div>
+      <nav class="pager" aria-label="Other habitats">
+        <a href="../index.html">← All habitats</a>
+        <a href="planning.html">Planning a route →</a>
+      </nav>
+    </main>
+    <script type="module">
+      import { mount } from '../src/ui/app.js';
+      mount('seasons');
+    </script>
+  </body>
+</html>

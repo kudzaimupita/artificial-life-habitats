@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="dark" />
+    <title>Learning to move · Artificial life habitats</title>
+    <link rel="stylesheet" href="../src/ui/styles.css" />
+  </head>
+  <body>
+    <main>
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="../index.html">Habitats</a><span>/</span><span class="here">03 movement</span>
+      </nav>
+      <h1>Learning to move</h1>
+      <p class="lede">
+        A plan is only as good as the planner's idea of its own body. Here each creature moves by
+        pressing one of four buttons, wired to the four directions in a scrambled order. Walls
+        block, and ice slides a creature one extra cell. Every 6,000 steps the wiring is turned a
+        quarter turn, as if the body had changed. One planner is <b>born knowing</b> the wiring and
+        the terrain, and never questions either. The other <b>learns movement</b> from nothing: it
+        tries each button once, then keeps a running count of which way each button moved it and
+        what each kind of ground did, with old counts fading so that recent experience wins. Until
+        the first rewiring, marked by a dashed line on the chart, the two should be hard to tell
+        apart. The line under each table shows what the creature believes its buttons do, against
+        what they really do.
+      </p>
+      <div data-app>
+        <noscript>This demo is a simulation drawn with JavaScript, which is switched off.</noscript>
+      </div>
+      <nav class="pager" aria-label="Other habitats">
+        <a href="planning.html">← Planning a route</a>
+        <a href="winter.html">Planning for winter →</a>
+      </nav>
+    </main>
+    <script type="module">
+      import { mount } from '../src/ui/app.js';
+      mount('movement');
+    </script>
+  </body>
+</html>

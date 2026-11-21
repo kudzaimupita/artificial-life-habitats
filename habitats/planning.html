@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="dark" />
+    <title>Planning a route · Artificial life habitats</title>
+    <link rel="stylesheet" href="../src/ui/styles.css" />
+  </head>
+  <body>
+    <main>
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="../index.html">Habitats</a><span>/</span><span class="here">02 planning</span>
+      </nav>
+      <h1>Planning a route</h1>
+      <p class="lede">
+        Both creatures here remember seasons in the same way. They differ in how they get to food.
+        This world has walls, and stepping on any food eats it, wanted or not. The
+        <b>greedy</b> creature picks the food it likes best and presses whichever button brings it
+        closer, so it gets stuck behind walls and blunders through poison that lies in the way. The
+        <b>planner</b> imagines its button presses before making them. It searches for a route,
+        treats food it believes is bad as if it were a wall, and weighs each meal against the length
+        of the walk to it. It plans again every few steps, and at once if a move does not land where
+        it expected. The planner is told how movement works and only has to learn what food is
+        worth. The dashed line shows where each creature is heading: the greedy one's points
+        straight at its target, the planner's bends.
+      </p>
+      <div data-app>
+        <noscript>This demo is a simulation drawn with JavaScript, which is switched off.</noscript>
+      </div>
+      <nav class="pager" aria-label="Other habitats">
+        <a href="seasons.html">← Seasons and memory</a>
+        <a href="movement.html">Learning to move →</a>
+      </nav>
+    </main>
+    <script type="module">
+      import { mount } from '../src/ui/app.js';
+      mount('planning');
+    </script>
+  </body>
+</html>

@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="dark" />
+    <title>One-trial danger memory · Artificial life habitats</title>
+    <link rel="stylesheet" href="../src/ui/styles.css" />
+  </head>
+  <body>
+    <main>
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="../index.html">Habitats</a><span>/</span><span class="here">05 danger</span>
+      </nav>
+      <h1>One-trial danger memory</h1>
+      <p class="lede">
+        In this world one food each season is nearly lethal: eating it costs 80 of a possible 100
+        energy. It is picked to look good by the usual rule, in which a food is worth its colour's
+        value plus its shape's value, so it is a true exception. Both creatures plan routes and
+        remember seasons. The <b>gradual learner</b> treats the deadly meal like any other surprise
+        and spreads the blame over that food's colour and its shape, which puts it off harmless
+        foods that only share one of them. The other creature has a <b>danger memory</b>. After a
+        single near-fatal meal it remembers that exact food, refuses to step on it in any season,
+        and leaves the rest of its beliefs alone. It drops the fear only if it ends up eating that
+        food and comes to no harm. The deadly food, marked with a cross, changes with the season, so
+        each creature has to meet each one at least once.
+      </p>
+      <div data-app>
+        <noscript>This demo is a simulation drawn with JavaScript, which is switched off.</noscript>
+      </div>
+      <nav class="pager" aria-label="Other habitats">
+        <a href="winter.html">← Planning for winter</a>
+        <a href="../index.html">All habitats →</a>
+      </nav>
+    </main>
+    <script type="module">
+      import { mount } from '../src/ui/app.js';
+      mount('danger');
+    </script>
+  </body>
+</html>
